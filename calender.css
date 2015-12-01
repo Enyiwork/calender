@@ -1,3 +1,6 @@
+#calenderTable{
+    cursor: pointer;
+}
 .currentDate{
     background-color: #AFEEEE;
     border-radius: 50%;

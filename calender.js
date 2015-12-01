@@ -177,21 +177,17 @@ var buildCalender = function(){
                       td.className = "currentDate";
                   }
                   td.innerHTML = dayValue;
-                  dayValue++;
-                  digit++;
                   }
               else {
                   if (dayValue === days) {
                       td.innerHTML = dayValue;
-                      dayValue++;
-                      digit++;
                   }
                   else {
                       td.innerHTML = "";
-                      dayValue++;
-                      digit++;
                   }
               }
+              dayValue++;
+              digit++;
           }
           row.appendChild(td);
       }
@@ -204,7 +200,7 @@ var showCalender = function(month, year, days){
   var monthName = document.getElementById('monthName');
   monthName.innerHTML = monthNames[month];
   var y = document.getElementById('yearName');
-  y.innerHTML = year;
+  y.innerHTML = " " + year;
   displayDays(month, year, days);
 };
 var getDays = function(month, year) {
