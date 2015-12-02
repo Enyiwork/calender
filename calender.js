@@ -2,25 +2,19 @@ var curDate = new Date();
 var curYear = curDate.getFullYear();
 var curMonth = curDate.getMonth();
 var day = curDate.getDay();
+var curDateNo = curDate.getDate();
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October', 'November', 'December'];
 var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 var noofDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-var displayDays = function(month, year, days) {
+var displayDays = function(month, year, days, date) {
   var firstDay = new Date(year, month, 1);//starting day of month
   var startDay = firstDay.getDay();
   var table = document.getElementById('calenderTable'); // week id for staring day
   var rows = Math.ceil(days/7);
   var digit = 1;
   var dayValue = 1;
-  /*if (((startDay === 5) || (startDay === 6)) && (days === 31)) {
-      rows = Math.ceil(days/7) + 1;console.log(rows);
-  }
-  else {
-      rows = Math.ceil(days/7);console.log(rows);
-  }
-  var rowsLength = table.rows.length;*/
-
+  var dateNo = date.getDate();
   for (var m = 0; m < rows; m++) {
       var row = document.getElementById('row'+(m+1) +'');
       row.border = 1;
@@ -29,42 +23,52 @@ var displayDays = function(month, year, days) {
           if ((startDay === 5) && (days === 31)){
               var t = document.getElementById('cell1');
               t.innerHTML = days;
+              t.className = 'date';
           }
           if ((startDay === 6) && (days === 31)){
               var newValue = document.getElementById('cell1');
               newValue.innerHTML = days - 1;
+              newValue.className = 'date';
               var newVal = document.getElementById('cell2');
               newVal.innerHTML = days;
+              newVal.className = 'date';
           }
           if ((startDay === 6) && (days === 30)){
               var tValue = document.getElementById('cell1');
               tValue.innerHTML = days;
+              tValue.className = 'date';
           }
           if (digit <= startDay) {
               td.innerHTML = "";
+              td.className = "";
               digit++;
           }
           else {
             if (dayValue <= days) {
+                if ((curDateNo === dayValue) && (dateNo === curDateNo)) {
+                    td.className = 'currentDate';
+                }
+                else {
+                    if(dateNo === dayValue) {
+                        td.className = 'selectedDate';
+                    }
+                    else {
+                        td.className = 'date';
+                    }
+                }
                 td.innerHTML = dayValue;
-                dayValue++;
-                digit++;
             }
             else {
-                /*if (dayValue === days) {
-                    td.innerHTML = days;
-                    dayValue++;
-                    digit++;
-                }
-                else {*/
-                    td.innerHTML = "";
-                    dayValue++;
-                    digit++;
-                //}
+                td.innerHTML = "";
+                td.className = "";
             }
+            dayValue++;
+            digit++;
           }
       }
   }
+  digit = 1;
+  dayValue = 1;
 };
 
 var prevMonth = function(){
@@ -87,7 +91,7 @@ var prevMonth = function(){
     }
   }
   days = getDays(monthId, year);
-  showCalender(monthId, year, days);
+  showCalender(monthId, year, days, curDate);
 };
 
 var nextMonth = function(){
@@ -110,7 +114,7 @@ var nextMonth = function(){
         }
     }
     days = getDays(monthId, year);
-    showCalender(monthId, year, days);
+    showCalender(monthId, year, days,curDate);
 };
 //build calender
 var buildCalender = function(){
@@ -166,24 +170,28 @@ var buildCalender = function(){
           var td = document.createElement('td');
           td.border = 1;
           td.id = 'cell'+ digit +'';
+          td.addEventListener('click', function(){getDateValue('cell'+ digit +'');});
           if (digit <= startDay)
           {
-              td.innerHTML = "";
+              td.innerHTML = '<span>' + "" + '</span>';
               digit++;
           }
           else {
               if ((dayValue < days) && (digit > startDay)) {
-                  if (curDate === dayValue) {
+                  if (curDateNo === dayValue) {
                       td.className = "currentDate";
                   }
-                  td.innerHTML = dayValue;
+                  else {
+                      td.className = "date";
+                  }
+                  td.innerHTML = '<span>' + dayValue +'<span>';
                   }
               else {
                   if (dayValue === days) {
-                      td.innerHTML = dayValue;
+                      td.innerHTML = '<span>' + dayValue + '</span>';
                   }
                   else {
-                      td.innerHTML = "";
+                      td.innerHTML = '<span>' + "" + '<span>';
                   }
               }
               dayValue++;
@@ -195,13 +203,12 @@ var buildCalender = function(){
     }
   calenderDiv.appendChild(table);
 };
-var showCalender = function(month, year, days){
-
+var showCalender = function(month, year, days, date){
   var monthName = document.getElementById('monthName');
   monthName.innerHTML = monthNames[month];
   var y = document.getElementById('yearName');
   y.innerHTML = " " + year;
-  displayDays(month, year, days);
+  displayDays(month, year, days, date);
 };
 var getDays = function(month, year) {
   var days = 0;
@@ -222,4 +229,31 @@ var getDays = function(month, year) {
       days = noofDays[month];
   }
   return days;
+};
+var getDateValue = function(id) {
+    var date = document.getElementById('"'+ id +'"').innerHTML;console.log(date);
+    var month = document.getElementById('monthName').innerHTML;
+    var year = document.getElementById('yearName').innerHTML;
+    var dateValue = document.getElementById('datepickertxt');
+    dateValue.value = month + " / " + date + " / " + year;
+};
+var setDateValue = function() {
+    var dateValue = document.getElementById('datepickertxt');
+    var date = new Date(dateValue.value);
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    //var displayDate = new Date(year, month, ((date.getDate()+1)));
+    //buildCalender();
+    document.getElementById('calenderIcon').click();
+    displayCalender(date);
+    dateValue.value ="";
+};
+var displayCalender = function(date) {
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var days = getDays(month, year);
+    showCalender(month, year, days, date);
+};
+var disableOnclick = function(id){
+    document.getElementById(id).removeAttribute('onclick');
 };

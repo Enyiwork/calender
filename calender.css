@@ -1,8 +1,15 @@
 #calenderTable{
     cursor: pointer;
 }
-.currentDate{
-    background-color: #AFEEEE;
-    border-radius: 50%;
+.currentDate {
+    background-color: #4682B4;
+    color: black;
+}
+.date {
+    background-color: silver;
+    color: black;
+}
+.selectedDate {
+    background-color: #FFE4E1;
     color: black;
 }
