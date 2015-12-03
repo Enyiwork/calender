@@ -1,15 +1,21 @@
-#calenderTable{
+#calenderTable {
     cursor: pointer;
 }
 .currentDate {
+    align-items: center;
+    align-self: center;
     background-color: #4682B4;
     color: black;
 }
 .date {
+    align-items: center;
+    align-self: center;
     background-color: silver;
     color: black;
 }
 .selectedDate {
+    align-items: center;
+    align-self: center;
     background-color: #FFE4E1;
     color: black;
 }
