@@ -18,6 +18,11 @@ var displayDays = function(month, year, days, date) {
     var dayValue = 1;
     var dateValue = date.getDate();
     var rowsCount = table.rows.length;
+    if (rows === (rowsCount - 2)) {
+        rows = rows;
+    } else {
+          rows = rows + 1;
+    }
     for (var m = 0; m < rows; m++) {
         var row = document.getElementById('row'+(m+1) +'');
         row.border = 1;
@@ -25,25 +30,21 @@ var displayDays = function(month, year, days, date) {
             var td = document.getElementById('cell'+ digit +'');
             if ((startDay === 5) && (days === 31) && (rows === (rowsCount - 2))){
                 var t = document.getElementById('cell1');
-                t.innerHTML = days;
-                t.addEventListener('click', function(){getDateValue('cell1');});
+                t.innerHTML = '<span onclick="getDateValue('+ days +')">'+ days + '</span>';
                 t.className = 'date';
             }
             if ((startDay === 6) && (days === 31) && (rows === (rowsCount - 2))){
                 var newValue = document.getElementById('cell1');
-                newValue.addEventListener('click', function(){getDateValue('cell1');});
-                newValue.innerHTML = days - 1;
+                newValue.innerHTML = '<span onclick="getDateValue('+ (days - 1) +')">'+ (days - 1) + '</span>';
                 newValue.className = 'date';
                 var newVal = document.getElementById('cell2');
-                newVal.innerHTML = days;
+                newVal.innerHTML = '<span onclick="getDateValue('+ days +')">'+ days + '</span>';
                 newVal.className = 'date';
-                newVal.addEventListener('click', function(){getDateValue('cell2');});
             }
             if ((startDay === 6) && (days === 30) && (rows === (rowsCount - 2))){
                 var tValue = document.getElementById('cell1');
-                tValue.innerHTML = days;
+                tValue.innerHTML = '<span onclick="getDateValue('+ days +')">'+ days + '</span>';
                 tValue.className = 'date';
-                tValue.addEventListener('click', function(){getDateValue('cell1');});
             }
             if (digit <= startDay) {
                 td.innerHTML = "";
@@ -58,12 +59,10 @@ var displayDays = function(month, year, days, date) {
                                       td.className = "date";
                                    }
                           }
-                        td.innerHTML = dayValue;
-                        td.addEventListener('click', function(){getDateValue('cell'+ digit +'');});
+                        td.innerHTML = '<span onclick="getDateValue(' + dayValue +')">'+ dayValue + '</span>';
                      } else { if (dayValue === days) {
-                                  td.innerHTML = dayValue;
+                                  td.innerHTML = '<span onclick="getDateValue(' + dayValue +')">'+ dayValue + '</span>';
                                   td.className = "date";
-                                  td.addEventListener('click', function(){getDateValue('cell'+ digit +'');});
                               } else {
                                     td.innerHTML = "";
                                     td.className = "";
@@ -76,10 +75,6 @@ var displayDays = function(month, year, days, date) {
     }
     digit = 1;
     dayValue = 1;
-  /*for (var k = 1; k <= 35; k++) {
-      var tdf = document.getElementById('cell'+ k +'');
-      tdf.addEventListener('click', function(){getDateValue('cell'+ k +'');});console.log("cell"+ k);
-  }*/
 };
 // go to the previous month in calender
 var prevMonth = function(){
@@ -176,12 +171,10 @@ var buildCalender = function() {
                         } else {
                               td.className = "date";
                           }
-                        td.innerHTML = dayValue;
-                        //td.addEventListener('click', function(){getDateValue('cell'+ digit +'');});
+                        td.innerHTML = '<span onclick="getDateValue(' + dayValue +')">'+ dayValue + '</span>';
                       } else { if (dayValue === days) {
-                                  td.innerHTML = dayValue;
+                                  td.innerHTML = '<span onclick="getDateValue(' + dayValue +')">'+ dayValue + '</span>';
                                   td.className = "date";
-                                  //td.addEventListener('click', function(){getDateValue('cell'+ digit +'');});
                                } else {
                                     td.innerHTML = "";
                                     td.className = "";
@@ -189,17 +182,12 @@ var buildCalender = function() {
                         }
                         dayValue++;
                         digit++;
-                        //td.addEventListener('click', function(){getDateValue('cell'+ digit +'');});
               }
             row.appendChild(td);
         }
         table.appendChild(row);
       }
       calenderDiv.appendChild(table);
-      for (var k = 1; k <= 35; k++) {
-        var getTd = document.getElementById('cell'+ k +'');
-        getTd.addEventListener('click', function(){getDateValue('cell'+ k +'');});
-      }
 };
 //show calender
 var showCalender = function(month, year, days, date){
@@ -213,7 +201,7 @@ var showCalender = function(month, year, days, date){
 var getDays = function(month, year) {
     var days = 0;
     if (month === 1) {
-        if ((((year % 100) === 0) && ((year % 400) === 0)) || (((year % 4) === 0) && ((year % 100) !== 0))){
+        if (((((year % 4) === 0) || ((year % 400) === 0))) && ((year % 100) !== 0)){
             days = 29;
         } else {
               days = 28;
@@ -224,9 +212,9 @@ var getDays = function(month, year) {
     return days;
 };
 //getting the date value from calender
-var getDateValue = function(id) {console.log(id);
+var getDateValue = function(value) {console.log(value);
     clear('datepickertxt');
-    var date = document.getElementById(id).innerHTML;console.log(date);
+    var date = value;console.log(date);
     var month = document.getElementById('monthName').innerHTML;
     monthId = monthNames.indexOf(month);
     var year = document.getElementById('yearName').innerHTML;
