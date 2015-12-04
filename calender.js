@@ -212,9 +212,9 @@ var getDays = function(month, year) {
     return days;
 };
 //getting the date value from calender
-var getDateValue = function(value) {console.log(value);
+var getDateValue = function(value) {
     clear('datepickertxt');
-    var date = value;console.log(date);
+    var date = value;
     var month = document.getElementById('monthName').innerHTML;
     monthId = monthNames.indexOf(month);
     var year = document.getElementById('yearName').innerHTML;
